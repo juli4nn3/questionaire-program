@@ -10,42 +10,120 @@ import java.util.Scanner;
 public class Main {
 
     public static void main(String[] args) {
+        // score choice variables
+        int choiceJava = 0;
+        int choiceCpp = 0;
+        int choicePython = 0;
+        int choiceScratch = 0;
+
+        // for loop counters
+        int tiedCounter = 0;
+        int decisionCounter = 0;
+        int nextChoiceValue = 0;
+
+        // other variables
+        boolean isTiedScore = false;
+        String finalUserLanguage = "";
+
+        // arrays
+        int highestScore = determineChoice[0];
+        int[] tiedScore = new int[4];
+
         // create objects
         Scanner userNameInput = new Scanner(System.in);
-        System.out.println("Enter username");
+        Scanner choiceInput = new Scanner(System.in);
 
-
-        // get userName
+        // gets userName
+        System.out.println("Enter username: ");
         String userName = userNameInput.nextLine();
+        userName = userName.trim();
 
 
-        Main questionaire = new Main(); // Create a questionaire object
+        // prints all questions and choices, gets userChoice input
+        for (int counter = 0; counter <= 9; counter++){
+            Main questionaire = new Main();
+            questionaire.questions(counter);
 
-        questionaire.questions(); // Call the questions() method
+            System.out.println("\nEnter: ");
+            String userChoice = choiceInput.nextLine();     
+            userChoice = userChoice.trim();
 
-        myCar.speed(200);          // Call the speed() method
+            // adds a counter to whichever choice is selected per question
+            switch(userChoice.toUpperCase()){
+                case "A":
+                    choiceJava++;
+                    break;
+                case "B":
+                    choiceCpp++;
+                    break;
+                case "C":
+                    choicePython++;
+                    break;
+                case "D":
+                    choiceScratch++;
+                    break;
+                default:
+                    System.out.println("Error! Please enter valid response!");
+                    counter--;
+                    break;
+            }
+        }
 
+        for (int n : determineChoice) {
+            // n is score value of each choice
+            // decision counter is the iteration
+            // highest score is the highest value iterated
+            // if next score is greater than the previous score, then make highest score the next score
 
-        // prints the user's name
-        Scanner.out.println(userName);
-        // closes the userName
+            if (decisionCounter <= 2) {
+                nextChoiceValue = determineChoice[(decisionCounter + 1)];
+            } else {
+                nextChoiceValue = -1;
+            }
+
+            if (n > nextChoiceValue) {
+                highestScore = n;
+                finalUserLanguage = userLanguage[decisionCounter];
+                if (n > tiedScore[0]){
+                    isTiedScore = false;
+                    tiedCounter = 0;
+                    for (int deleteTiedScore = 0; deleteTiedScore <= 3; deleteTiedScore++) {
+                        tiedScore[deleteTiedScore] = 0;
+                    }
+                }
+            } else if (n == nextChoiceValue && n > highestScore) {
+                isTiedScore = true;
+                tiedScore[tiedCounter] = highestScore;
+                finalUserLanguage += userLanguage[decisionCounter] + " ";
+                tiedCounter++;
+            }
+            decisionCounter++;
+        }
+
+        if (isTiedScore == true) {
+            System.out.println("\nThere is a tie! You are the following: " + finalUserLanguage);
+        } else {
+            System.out.println(userName + ", You are " + finalUserLanguage);
+        }
+
+        // closes all input Scanner objects
         userNameInput.close();
+        choiceInput.close();
     }
 
-    public void questions() {
-        Scanner myObj = new Scanner(System.in);
+    public void questions(int counter) {
 
         final String question[] = {
-            "1) Do you like typing?", 
-            "2) Do you have a lot of experience with coding?", 
-            "3) Do you enjoy simplicity?", 
-            "4) DO you plan on going into a programming field?", 
-            "5) Do you like classes?", 
-            "6) What's your favourite field of programming?", 
-            "7) How old are you?", 
-            "8) How hygenic are you?", 
-            "9) How social are you?", 
-            "10) What food would you eat at a restaurant?"
+            "\n1) Do you like typing?\n", 
+            "\n2) Do you have a lot of experience with coding?\n", 
+            "\n3) Do you enjoy simplicity?\n", 
+            "\n4) DO you plan on going into a programming field?\n", 
+            "\n5) Do you like classes?\n", 
+            "\n6) What's your favourite field of programming?\n", 
+            "\n7) How old are you?\n", 
+            "\n8) How hygenic are you?\n", 
+            "\n9) How social are you?\n", 
+            "\n10) What food would you eat at a restaurant?\n"
         };
 
         final String choices[] = {
@@ -111,23 +189,7 @@ public class Main {
             """
         };
 
-        for (int counter = 0; counter <= 9; counter++){
-            System.out.println(question[counter]);
-            System.out.println(choices[counter]);
-            
-            
-        }
-    }
-
-    public void fullThrottle() {
-        System.out.println("The car is going as fast as it can!");
-    }
-
-    public void speed(int maxSpeed) {
-        // add constants banners
-        // get userName
-        // if questionaire complete, then state what prog. lang. the user is
-
-        System.out.println("Max speed is: " + maxSpeed);
+        System.out.println(question[counter]);
+        System.out.println(choices[counter]);
     }
 }
